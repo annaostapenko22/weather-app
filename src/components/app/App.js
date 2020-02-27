@@ -7,7 +7,11 @@ class App extends Component {
     location: "",
     data: [],
     dates: [],
-    temps: []
+    temps: [],
+    selected: {
+      date: "",
+      temp: null
+    }
   };
   fetchData = async e => {
     e.preventDefault();
@@ -24,12 +28,22 @@ class App extends Component {
     });
     console.log("state", this.state);
   };
-  passData = () => {};
   changeLocation = e => {
     let location = e.target.value;
     this.setState({ location });
   };
+  onPlotClick = data => {
+    if (data) {
+      this.setState({
+        selected: {
+          date: data.x,
+          temp: data.y
+        }
+      });
+    }
+  };
   render() {
+    console.log("sel temp=>", this.state.selected);
     let currentTemp = "Specify location";
     if (this.state.data.length) {
       currentTemp = this.state.data[0].main.temp;
@@ -48,18 +62,29 @@ class App extends Component {
             />
           </label>
         </form>
-        <p className="temp-wrapper">
-          <span className="temp">{currentTemp}</span>
-          <span className="temp-symbol">°C</span>
-        </p>
-        
-           <h2>Forecast</h2>
-          <Plot
-            xData={this.state.dates}
-            yData={this.state.temps}
-            type="scatter"
-          />
-        
+        {this.state.data.length ? (
+          <div className="wrapper">
+            <p className="temp-wrapper">
+              {this.state.selected.temp ? (
+                <span className="temp">{this.state.selected.temp}</span>
+              ) : (
+                <span className="temp">{currentTemp}</span>
+              )}
+              <span className="temp-symbol">°C</span>
+              <span className="temp-date">
+                {this.state.selected.temp ? this.state.selected.date : ""}
+              </span>
+            </p>
+            <h2>Forecast</h2>
+            <Plot
+              xData={this.state.dates}
+              yData={this.state.temps}
+              type="scatter"
+              onPlotClick={this.onPlotClick}
+              style={{ width: 300, height: 600 }}
+            />
+          </div>
+        ) : null}
       </div>
     );
   }

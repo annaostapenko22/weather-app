@@ -4,14 +4,18 @@ import createPlotlyComponent from "react-plotlyjs";
 import Plotly from "plotly.js/dist/plotly-cartesian";
 const PlotlyComponent = createPlotlyComponent(Plotly);
 class Plotlyy extends Component {
+  onPlotClick = e => {
+    console.log("yea", e.points[0].y);
+    this.props.onPlotClick(e.points[0]);
+  };
   render() {
     return (
       <PlotlyComponent
         data={[
           {
-            type: this.props.type,
             x: this.props.xData,
-            y: this.props.yData
+            y: this.props.yData,
+            type: this.props.type
           },
           {
             margin: {
@@ -24,9 +28,11 @@ class Plotlyy extends Component {
         layout={{
           xaxis: {
             gridcolor: "transparent"
-          }
+          },
+          height: 550
         }}
         config={{ displayModeBar: false }}
+        onClick={this.onPlotClick}
       />
     );
   }
