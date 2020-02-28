@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import "./App.css";
 import axios from "axios";
 import Plot from "../plot/Plot";
+import {handleChangeLocation} from "../../redux/forecastOperations"
+import {connect} from "react-redux"
 class App extends Component {
   state = {
     location: "",
@@ -15,18 +17,18 @@ class App extends Component {
   };
   fetchData = async e => {
     e.preventDefault();
-    console.log("yes", this.state.location);
-    let location = encodeURIComponent(this.state.location);
-    const data = await axios.get(
-      `http://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=b556b8a9d0ef0681959a194e9bf8845d&units=metric`
-    );
-    console.log("DATA=>", data.data.list);
-    await this.setState({
-      data: data.data.list,
-      dates: data.data.list.map(elem => elem.dt_txt),
-      temps: data.data.list.map(elem => elem.main.temp)
-    });
-    console.log("state", this.state);
+    let location = this.state.location;
+    // const data = await axios.get(
+    //   `http://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=b556b8a9d0ef0681959a194e9bf8845d&units=metric`
+    // );
+    const data = this.props.handleChangeLocation(location)
+    // console.log("DATA=>", data.data.list);
+    // await this.setState({
+    //   data: data.data.list,
+    //   dates: data.data.list.map(elem => elem.dt_txt),
+    //   temps: data.data.list.map(elem => elem.main.temp)
+    // });
+    console.log("data data=>", data);
   };
   changeLocation = e => {
     let location = e.target.value;
@@ -43,7 +45,6 @@ class App extends Component {
     }
   };
   render() {
-    console.log("sel temp=>", this.state.selected);
     let currentTemp = "Specify location";
     if (this.state.data.length) {
       currentTemp = this.state.data[0].main.temp;
@@ -89,5 +90,13 @@ class App extends Component {
     );
   }
 }
+// const mapStateToProps = (state) => ({
 
-export default App;
+  
+// })
+
+const mapDispatchToProps = {
+  handleChangeLocation
+}
+
+export default connect(null, mapDispatchToProps)(App);
