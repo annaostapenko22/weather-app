@@ -12,6 +12,7 @@ class App extends Component {
       temp: null
     }
   };
+
   fetchData = async e => {
     e.preventDefault();
     let location = this.state.location;
@@ -32,10 +33,9 @@ class App extends Component {
     }
   };
   render() {
-    console.log("PROPS HERE", this.props.location.location)
     let currentTemp = "Specify location";
-    if (this.props.data.data.length) {
-      currentTemp = this.props.data.data[0].main.temp;
+    if (this.props.redux.getIn(["data", "0"])) {
+      currentTemp = this.props.redux.getIn(["data", "0", "main", "temp"]);
     }
     return (
       <div>
@@ -51,7 +51,7 @@ class App extends Component {
             />
           </label>
         </form>
-        {this.props.data.data.length ? (
+        {this.props.redux.getIn(["data", "0"]) ? (
           <div className="wrapper">
             <p className="temp-wrapper">
               {this.state.selected.temp ? (
@@ -66,8 +66,8 @@ class App extends Component {
             </p>
             <h2>Forecast</h2>
             <Plot
-              xData={this.props.dates.dates}
-              yData={this.props.temps.temps}
+              xData={this.props.redux.get("dates")}
+              yData={this.props.redux.get("temps")}
               type="scatter"
               onPlotClick={this.onPlotClick}
               style={{ width: 300, height: 600 }}
@@ -78,11 +78,8 @@ class App extends Component {
     );
   }
 }
-const mapStateToProps = (state) => ({
-  location: state.toJS(),
-  data: state.toJS(),
-  dates: state.toJS(),
-  temps: state.toJS()
+const mapStateToProps = state => ({
+  redux: state
 });
 
 const mapDispatchToProps = {

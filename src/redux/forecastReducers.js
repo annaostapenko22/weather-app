@@ -5,11 +5,7 @@ const initialState = fromJS({
   location: "",
   data: {},
   dates: [],
-  temps: [],
-  selected: {
-    date: "",
-    temp: null
-  }
+  temps: []
 });
 
 export const mainReducer = (state = initialState, action) => {
