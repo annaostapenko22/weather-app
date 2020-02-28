@@ -3,9 +3,8 @@ import createPlotlyComponent from "react-plotlyjs";
 
 import Plotly from "plotly.js/dist/plotly-cartesian";
 const PlotlyComponent = createPlotlyComponent(Plotly);
-class Plotlyy extends Component {
+class Plot extends Component {
   onPlotClick = e => {
-    console.log("yea", e.points[0].y);
     this.props.onPlotClick(e.points[0]);
   };
   render() {
@@ -38,4 +37,4 @@ class Plotlyy extends Component {
   }
 }
 
-export default Plotlyy;
+export default Plot;

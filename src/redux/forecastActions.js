@@ -5,18 +5,18 @@ export const changeLocation = location => ({
   location: location
 });
 
-export const setSelectedDate = date => ({
-  type: Type.SET_SELECTED_DATE,
-  date: date
-});
+// export const setSelectedDate = date => ({
+//   type: Type.SET_SELECTED_DATE,
+//   date: date
+// });
 
-export const setSelectedTemp = temp => ({
-  type: Type.SET_SELECTED_TEMP,
-  temp: temp
-});
+// export const setSelectedTemp = temp => ({
+//   type: Type.SET_SELECTED_TEMP,
+//   temp: temp
+// });
 
 export const setData = data => ({
-  type: Type.CHANGE_LOCATION,
+  type: Type.SET_DATA,
   data: data
 });
 

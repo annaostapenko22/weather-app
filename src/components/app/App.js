@@ -1,15 +1,11 @@
 import React, { Component } from "react";
 import "./App.css";
-import axios from "axios";
 import Plot from "../plot/Plot";
-import {handleChangeLocation} from "../../redux/forecastOperations"
-import {connect} from "react-redux"
+import { handleChangeLocation } from "../../redux/forecastOperations";
+import { connect } from "react-redux";
 class App extends Component {
   state = {
     location: "",
-    data: [],
-    dates: [],
-    temps: [],
     selected: {
       date: "",
       temp: null
@@ -18,17 +14,7 @@ class App extends Component {
   fetchData = async e => {
     e.preventDefault();
     let location = this.state.location;
-    // const data = await axios.get(
-    //   `http://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=b556b8a9d0ef0681959a194e9bf8845d&units=metric`
-    // );
-    const data = this.props.handleChangeLocation(location)
-    // console.log("DATA=>", data.data.list);
-    // await this.setState({
-    //   data: data.data.list,
-    //   dates: data.data.list.map(elem => elem.dt_txt),
-    //   temps: data.data.list.map(elem => elem.main.temp)
-    // });
-    console.log("data data=>", data);
+    this.props.handleChangeLocation(location);
   };
   changeLocation = e => {
     let location = e.target.value;
@@ -46,8 +32,8 @@ class App extends Component {
   };
   render() {
     let currentTemp = "Specify location";
-    if (this.state.data.length) {
-      currentTemp = this.state.data[0].main.temp;
+    if (this.props.data.length) {
+      currentTemp = this.props.data[0].main.temp;
     }
     return (
       <div>
@@ -63,7 +49,7 @@ class App extends Component {
             />
           </label>
         </form>
-        {this.state.data.length ? (
+        {this.props.data.length ? (
           <div className="wrapper">
             <p className="temp-wrapper">
               {this.state.selected.temp ? (
@@ -78,8 +64,8 @@ class App extends Component {
             </p>
             <h2>Forecast</h2>
             <Plot
-              xData={this.state.dates}
-              yData={this.state.temps}
+              xData={this.props.dates}
+              yData={this.props.temps}
               type="scatter"
               onPlotClick={this.onPlotClick}
               style={{ width: 300, height: 600 }}
@@ -90,13 +76,15 @@ class App extends Component {
     );
   }
 }
-// const mapStateToProps = (state) => ({
-
-  
-// })
+const mapStateToProps = state => ({
+  location: state.location,
+  data: state.data,
+  dates: state.dates,
+  temps: state.temps
+});
 
 const mapDispatchToProps = {
   handleChangeLocation
-}
+};
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
