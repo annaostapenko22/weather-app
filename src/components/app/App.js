@@ -3,6 +3,7 @@ import "./App.css";
 import Plot from "../plot/Plot";
 import { handleChangeLocation } from "../../redux/forecastOperations";
 import { connect } from "react-redux";
+
 class App extends Component {
   state = {
     location: "",
@@ -31,9 +32,10 @@ class App extends Component {
     }
   };
   render() {
+    console.log("PROPS HERE", this.props.location.location)
     let currentTemp = "Specify location";
-    if (this.props.data.length) {
-      currentTemp = this.props.data[0].main.temp;
+    if (this.props.data.data.length) {
+      currentTemp = this.props.data.data[0].main.temp;
     }
     return (
       <div>
@@ -49,7 +51,7 @@ class App extends Component {
             />
           </label>
         </form>
-        {this.props.data.length ? (
+        {this.props.data.data.length ? (
           <div className="wrapper">
             <p className="temp-wrapper">
               {this.state.selected.temp ? (
@@ -64,8 +66,8 @@ class App extends Component {
             </p>
             <h2>Forecast</h2>
             <Plot
-              xData={this.props.dates}
-              yData={this.props.temps}
+              xData={this.props.dates.dates}
+              yData={this.props.temps.temps}
               type="scatter"
               onPlotClick={this.onPlotClick}
               style={{ width: 300, height: 600 }}
@@ -76,11 +78,11 @@ class App extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
-  location: state.location,
-  data: state.data,
-  dates: state.dates,
-  temps: state.temps
+const mapStateToProps = (state) => ({
+  location: state.toJS(),
+  data: state.toJS(),
+  dates: state.toJS(),
+  temps: state.toJS()
 });
 
 const mapDispatchToProps = {

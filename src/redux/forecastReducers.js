@@ -1,6 +1,7 @@
 import Type from "./forecastTypes";
+import {fromJS} from "immutable";
 
-const initialState = {
+const initialState = fromJS({
   location: "",
   data: {},
   dates: [],
@@ -9,18 +10,18 @@ const initialState = {
     date: "",
     temp: null
   }
-};
+});
 
 export const mainReducer = (state = initialState, action) => {
   switch (action.type) {
     case Type.CHANGE_LOCATION:
-      return {...state, location: action.location};
+      return state.set("location", fromJS(action.location));
     case Type.SET_DATA:
-      return {...state, data: action.data};
+      return state.set("data", fromJS(action.data));
     case Type.SET_DATES:
-      return {...state, dates: action.dates};
+      return state.set("dates", fromJS(action.dates));
     case Type.SET_TEMPS:
-      return {...state, temps: action.temps};
+      return state.set("temps", fromJS(action.temps));
     // case Type.SET_SELECTED_TEMP:
     //   return {
     //     ...state,
