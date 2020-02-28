@@ -8,6 +8,7 @@ class Plot extends Component {
     this.props.onPlotClick(e.points[0]);
   };
   render() {
+   console.log("PLOT")
     return (
       <PlotlyComponent
         data={[
